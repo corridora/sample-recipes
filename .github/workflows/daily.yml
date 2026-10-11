@@ -1,0 +1,31 @@
+name: Daily browser incident and watchdog
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sample-recipes-daily
+  cancel-in-progress: false
+jobs:
+  browser:
+    if: vars.ENABLE_SYNTHETICS == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      BASE_URL: ${{ vars.APP_URL }}
+      DEMO_CONTROL_TOKEN: ${{ secrets.DEMO_CONTROL_TOKEN }}
+      FORCE_REPLAY: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: python scripts/daily.py

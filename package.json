@@ -1,0 +1,14 @@
+{
+  "name": "@corridora/sample-recipes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": { "node": ">=22.12" },
+  "scripts": {
+    "build": "vite build --config frontend/vite.config.js",
+    "test:e2e": "playwright test",
+    "test": "python3 -m pytest"
+  },
+  "dependencies": { "vue": "3.5.43", "@opentelemetry/api": "1.9.0" },
+  "devDependencies": { "vite": "8.3.4", "@vitejs/plugin-vue": "6.0.5", "@playwright/test": "1.61.1" }
+}

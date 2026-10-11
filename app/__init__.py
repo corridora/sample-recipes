@@ -1,0 +1,1 @@
+"""Corridora recipes sample."""
